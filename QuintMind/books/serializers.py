@@ -18,7 +18,21 @@ class BookSerializer(serializers.ModelSerializer):
     # StringRelatedField simply calls the __str__() method of each related object.
     authors = serializers.StringRelatedField(many=True, read_only=True)
     categories = serializers.StringRelatedField(many=True, read_only=True)
-    average_rating = serializers.SerializerMethodField()
+    average_rating = serializers.SerializerMethodField(read_only=True)
+
+    # --- WRITE-ONLY FIELDS ---
+    author_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Author.objects.all(), 
+        many=True, 
+        write_only=True, 
+        source='authors' 
+    )
+    category_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(), 
+        many=True, 
+        write_only=True, 
+        source='categories' 
+    )
     class Meta:
         model = Book
         fields = [
@@ -33,7 +47,10 @@ class BookSerializer(serializers.ModelSerializer):
             'PublishDate',
             'ebook_content_url', 
             'authors',           
-            'categories',        
+            'categories',
+            'average_rating',
+            'author_ids',
+            'category_ids',
         ]
     def get_average_rating(self, obj):
         avg = obj.ratings.aggregate(Avg('rating_value'))['rating_value__avg']
