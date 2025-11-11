@@ -39,7 +39,21 @@ After running the server, access the interactive API documentation:
 - **ReDoc**: `http://127.0.0.1:8000/api/schema/redoc/`
 - **OpenAPI Schema**: `http://127.0.0.1:8000/api/schema/`
 
-## 5. Run Migrations and Start Server
+## 5. Update Swagger Schema
+
+To regenerate the OpenAPI schema after making changes to your API:
+
+```bash
+# Generate schema file
+python manage.py spectacular --color --file schema.yml
+
+# Or generate in JSON format
+python manage.py spectacular --color --file schema.json
+```
+
+The schema will automatically update when you refresh the Swagger UI page, but you can use this command to generate a static schema file for documentation purposes.
+
+## 6. Run Migrations and Start Server
 
 ```bash
 # Navigate to project directory
