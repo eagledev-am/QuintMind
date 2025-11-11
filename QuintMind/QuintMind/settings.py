@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'discussions.apps.DiscussionsConfig' ,
     'subscriptions.apps.SubscriptionsConfig' ,
     'rest_framework',
+    'django_filters',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

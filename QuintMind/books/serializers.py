@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Author, Category, Book, UserRating, UserReadingProgress
 from django.conf import settings
+from django.db.models import Avg
 
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +18,7 @@ class BookSerializer(serializers.ModelSerializer):
     # StringRelatedField simply calls the __str__() method of each related object.
     authors = serializers.StringRelatedField(many=True, read_only=True)
     categories = serializers.StringRelatedField(many=True, read_only=True)
+    average_rating = serializers.SerializerMethodField()
     class Meta:
         model = Book
         fields = [
@@ -28,11 +30,15 @@ class BookSerializer(serializers.ModelSerializer):
             'Price', 
             'Language', 
             'PublishDate',
-            'ebook_content_url', # The field for our premium feature
-            'authors',           # The human-readable list of authors
-            'categories',        # The human-readable list of categories
+            'ebook_content_url', 
+            'authors',           
+            'categories',        
         ]
-
+    def get_average_rating(self, obj):
+        avg = obj.ratings.aggregate(Avg('rating_value'))['rating_value__avg']
+        if avg is None:
+            return 0.0
+        return round(avg, 1) # Round to one decimal place
 class UserRatingSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
