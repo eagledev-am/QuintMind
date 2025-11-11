@@ -16,6 +16,6 @@ __pycache__/
 
 # Ignore media/uploads (optional)
 
-# Ignore VSCode and PyCharm settings (optional)
-.vscode/
-.idea/
+env/
+
+__pycache__
