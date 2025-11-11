@@ -29,6 +29,7 @@ class Book(models.Model):
     """The main Book model."""
     title = models.CharField(max_length=255)
     Description = models.TextField(blank=True, null=True)
+    cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)
     Edition = models.CharField(max_length=100, blank=True, null=True)
     NumberOfPages = models.PositiveIntegerField()
     Price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
